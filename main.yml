@@ -1,0 +1,24 @@
+---
+
+- hosts: devenvs
+  become: true
+  tasks:
+
+  - name: install packages
+    package:
+      name:
+        - docker
+        - git
+        - zsh
+        - util-linux-user
+      state: latest
+      update_cache: yes
+
+  - name: start docker service
+    service:
+      name: docker
+      state: started
+
+  - name: config default shell
+    command:
+      cmd: "chsh -s /usr/bin/zsh ec2-user"
