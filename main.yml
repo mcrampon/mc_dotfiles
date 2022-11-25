@@ -4,6 +4,10 @@
   become: true
   tasks:
 
+  - name: include vars
+    include_vars:
+      file: vault.yml
+
   - name: install packages
     package:
       name:
@@ -22,3 +26,31 @@
   - name: config default shell
     command:
       cmd: "chsh -s /usr/bin/zsh ec2-user"
+
+  - name: create ssh key
+    copy:
+      content: "{{ github_private_key }}"
+      dest: /home/ec2-user/.ssh/id_ed25519
+      group: ec2-user
+      owner: ec2-user
+      mode: 0600
+
+- hosts: devenvs
+  become: false
+  tasks:
+
+  - name: create git config
+    copy:
+      content: |
+        Host github_ssh_connection
+          HostName github.com
+          IdentityFile /home/ec2-user/.ssh/id_ed25519
+      dest: /home/ec2-user/.ssh/config
+
+  - name: clone this
+    git:
+      repo: git@github.com:mcrampon/mc_dotfiles.git
+      dest: /home/ec2-user/mc_dotfiles
+      clone: yes
+      accept_hostkey: yes
+      key_file: /home/ec2-user/.ssh/id_ed25519
