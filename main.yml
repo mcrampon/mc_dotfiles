@@ -22,10 +22,12 @@
     service:
       name: docker
       state: started
+      enabled: yes
 
   - name: config default shell
-    command:
-      cmd: "chsh -s /usr/bin/zsh ec2-user"
+    user:
+      name: ec2-user
+      shell: /usr/bin/zsh
 
   - name: create ssh key
     copy:
