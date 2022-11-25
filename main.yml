@@ -39,7 +39,7 @@
   become: false
   tasks:
 
-  - name: create git config
+  - name: create ssh config
     copy:
       content: |
         Host github_ssh_connection
@@ -54,3 +54,9 @@
       clone: yes
       accept_hostkey: yes
       key_file: /home/ec2-user/.ssh/id_ed25519
+
+  - name: create git config
+    file:
+      src: /home/ec2-user/mc_dotfiles/files/gitconfig
+      dest: /home/ec2-user/.gitconfig
+      state: link

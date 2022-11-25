@@ -1,0 +1,9 @@
+[alias]
+  co=checkout
+  st=status
+  rlb=reset HEAD~
+  br=branch
+  wip=!git add . && git commit -nm "WIP"
+[user]
+  email = matthieu.crampon@gmail.com
+  name = Matthieu
